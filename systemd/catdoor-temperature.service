@@ -1,0 +1,14 @@
+[Unit]
+Description=Cat Door DS18B20 Temperature API
+After=network.target
+
+[Service]
+Type=simple
+User=beheerder
+WorkingDirectory=/home/beheerder/Cat-Door-Project
+ExecStart=/usr/bin/python3 /home/beheerder/Cat-Door-Project/src/temperature_api/ds18b20_api.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
