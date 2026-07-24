@@ -1,0 +1,14 @@
+[Unit]
+Description=Cat Door Project - Cat Alarm
+After=network.target
+
+[Service]
+Type=simple
+User=beheerder
+WorkingDirectory=/home/beheerder/Cat-Door-Project
+ExecStart=/home/beheerder/catalarm-venv/bin/python /home/beheerder/Cat-Door-Project/src/cat_alarm/catalarm.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

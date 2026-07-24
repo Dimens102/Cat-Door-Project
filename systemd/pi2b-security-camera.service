@@ -1,0 +1,15 @@
+[Unit]
+Description=Cat Door Project - USB Security Camera
+After=network-online.target sound.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=beheerder
+WorkingDirectory=/home/beheerder/Cat-Door-Project
+ExecStart=/usr/bin/python3 /home/beheerder/Cat-Door-Project/src/security_camera/pi2b_security_cam_audio.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

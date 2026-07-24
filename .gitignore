@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+catalarm-venv/
+
+# Runtime logs and state
+*.log
+*.log.*
+catalarm-events.log
+latest.jpg
+latest_tmp.jpg
+archive_download.zip
+
+# Video, audio and snapshots
+clips/
+archive/
+audio_messages/
+*.mp4
+*.h264
+*.wav
+*.jpg
+*.jpeg
+
+# Secrets and local configuration
+.env
+.env.*
+*.key
+*.pem
+*.crt
+secrets/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary backup files
+*.bak
+*~
