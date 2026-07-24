@@ -4,40 +4,33 @@ __pycache__/
 *.pyo
 .venv/
 venv/
-catalarm-venv/
+*-venv/
 
 # Runtime logs and state
 *.log
-*.log.*
-catalarm-events.log
-latest.jpg
-latest_tmp.jpg
-archive_download.zip
+runtime/*
+!runtime/README.md
 
-# Video, audio and snapshots
+# Camera and audio output
 clips/
 archive/
 audio_messages/
+latest.jpg
 *.mp4
-*.h264
+*.avi
 *.wav
-*.jpg
-*.jpeg
+*.zip
 
-# Secrets and local configuration
+# Local configuration and secrets
 .env
 .env.*
+*.token
 *.key
 *.pem
-*.crt
-secrets/
 
-# Editors and operating systems
+# Editor and OS files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-
-# Temporary backup files
-*.bak
 *~

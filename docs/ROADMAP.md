@@ -1,64 +1,71 @@
 # Roadmap
 
-## Phase 1 — Stabilize the existing alarm
+The roadmap is ordered by dependency and risk. Later milestones assume the earlier sensing and safety work is stable.
 
-- Repair or reseat the current sensor connection.
-- Record stable idle and blocked voltage ranges.
-- Confirm fault limits.
-- Add a repeatable calibration procedure.
-- Keep alarm logging and persistent journald.
-- Add an explicit safe startup delay and sensor-health check.
+## Milestone 1 — Stabilize the existing alarm
 
-## Phase 2 — Repository and deployment discipline
+- Verify ADS1115 wiring and power.
+- Establish repeatable clear and occupied voltage ranges.
+- Capture raw-value diagnostics during faults.
+- Confirm false-reset and countdown behavior with controlled tests.
+- Confirm the buzzer cannot remain energized indefinitely.
+- Record a known-good hardware baseline.
 
-- Run the project from the Git clone instead of loose files in `/home/beheerder`.
-- Keep runtime data outside the repository.
-- Add a configuration file instead of editing thresholds in source.
-- Add an installation script.
-- Add a hardware self-test command.
-- Record actual service files from the Pi and replace the current templates.
+**Exit criterion:** several days of operation without unexplained occupancy events or sensor-fault spikes.
 
-## Phase 3 — Camera reintegration
+## Milestone 2 — Consolidate configuration and services
 
-- Resolve the GPIO17 conflict.
-- Trigger camera recording from alarm events.
-- Store an image or clip reference with important events.
-- Reduce CPU load on Pi 2 or migrate camera work to a newer Pi.
-- Separate camera configuration from source code.
+- Move thresholds, GPIO assignments and paths into configuration.
+- Resolve the GPIO17 button/PIR conflict.
+- Standardize systemd services and working directories.
+- Add startup validation for I²C, camera and writable runtime paths.
+- Add a version field to structured events.
 
-## Phase 4 — Passage direction
+**Exit criterion:** both applications can be installed predictably without editing source constants.
 
-- Add a second sensor.
-- Detect sensor A → sensor B versus B → A.
-- Distinguish entering, leaving, hesitation and reversal.
-- Reject impossible or noisy sequences.
+## Milestone 3 — Improve passage detection
 
-## Phase 5 — Cat identity
+- Evaluate two-sensor direction detection.
+- Distinguish entering, leaving, hesitation and partial obstruction.
+- Add timing diagrams and recorded test cases.
+- Compare analog, break-beam, ToF and other suitable sensors.
 
-Evaluate one or more:
+**Exit criterion:** direction and occupancy are classified reliably under normal cat movement.
 
-- RFID collar tag;
-- image recognition;
-- weight measurement;
-- combined sensor signature.
+## Milestone 4 — Integrate camera evidence
 
-Identity must fail safely: an uncertain result must not trap the cat.
+- Trigger snapshots or short clips from alarm events.
+- Correlate media with event IDs and timestamps.
+- Add retention limits and privacy controls.
+- Separate camera acquisition from the web interface.
 
-## Phase 6 — Motorized door
+**Exit criterion:** each relevant passage event can be reviewed without continuous recording.
 
-- Select actuator and motor driver.
-- Add open and closed limit switches.
-- Add obstruction/current detection.
-- Add manual override.
-- Add emergency mechanical release.
-- Add watchdog and power-loss behavior.
+## Milestone 5 — Cat identification
 
-## Phase 7 — User interface and automation
+Candidate approaches:
 
-- Web dashboard.
-- Sensor-health state.
-- Door state and manual control.
-- Event timeline.
-- Camera clips linked to events.
-- Configurable schedules and rules.
-- Notifications only for meaningful failures or exceptions.
+- RFID collar/tag reader;
+- visual classification;
+- combined RFID and camera confirmation.
+
+Identification must degrade safely: an unknown or unreadable identity may be logged, but must not create a trapping hazard.
+
+## Milestone 6 — Door mechanism prototype
+
+- Select actuator and mechanical lock/opening method.
+- Add open/closed limit detection.
+- Add obstruction sensing.
+- Add manual release.
+- Define behavior for power loss, software crash and sensor disagreement.
+- Bench-test away from the cat before installation.
+
+**Exit criterion:** repeated mechanical cycles complete safely and recover from simulated faults.
+
+## Milestone 7 — Unified controller and interface
+
+- Central event/state service.
+- Dashboard for current state, health and history.
+- Manual controls with authentication.
+- Alerts for hardware faults or prolonged obstruction.
+- Backup/export of configuration and event history.
