@@ -1,4 +1,4 @@
-# Cat Door Project
+# Cat Door Project1
 
 A Raspberry Pi project for detecting activity at a cat passage and developing that prototype into a reliable, automated cat-door system.
 
@@ -89,3 +89,104 @@ python3 -m compileall -q src hardware_tests
 ## Safety boundary
 
 The current code is a monitoring and alarm prototype. It must not directly control a powered door until obstruction detection, manual release, actuator limits, fail-safe behavior and recovery after power loss have been designed and tested.
+
+# Cat Door Project2
+
+## DS18B20 Temperature Service
+
+The Cat Door PI (PI2B) exposes a lightweight temperature service
+intended for other systems such as the Radio Tower PI.
+
+### Purpose
+
+-   Read the DS18B20 every 30 seconds.
+-   Store every reading in a monthly CSV archive.
+-   Expose the latest reading through a JSON endpoint.
+-   Start automatically during boot.
+-   Keep six months of history.
+
+The Radio Tower polls this endpoint every 30 seconds and is responsible
+for formatting, graphs, alerts and presentation.
+
+## Hardware
+
+-   Sensor: DS18B20
+-   GPIO: BCM GPIO24 (Physical pin 18)
+-   Interface: 1-Wire
+
+Enable:
+
+``` text
+dtoverlay=w1-gpio,gpiopin=24
+```
+
+## Service
+
+Service name:
+
+``` text
+catdoor-temperature.service
+```
+
+Useful commands:
+
+``` bash
+sudo systemctl status catdoor-temperature.service
+sudo systemctl restart catdoor-temperature.service
+sudo journalctl -u catdoor-temperature.service -f
+```
+
+## JSON API
+
+Endpoint:
+
+``` text
+http://PI2B:8765/temperature
+```
+
+Example:
+
+``` json
+{
+  "sensor_id": "28-000008c84830",
+  "temperature_millidegrees_c": 20625,
+  "timestamp_utc": "2026-07-24T01:02:17.114731+00:00"
+}
+```
+
+## CSV Archive
+
+Location:
+
+``` text
+runtime/temperature/
+```
+
+One file is created per month:
+
+``` text
+YYYY-MM.csv
+```
+
+CSV format:
+
+``` csv
+timestamp_utc,sensor_id,temperature_millidegrees_c
+2026-07-24T01:01:15Z,28-000008c84830,20562
+```
+
+Files older than six months are removed automatically.
+
+## Repository Layout
+
+``` text
+src/
+└── temperature_api/
+    └── ds18b20_api.py
+
+runtime/
+└── temperature/
+
+systemd/
+└── catdoor-temperature.service
+```
